@@ -1,0 +1,1230 @@
+esphome:
+  name: esp32-remote
+  friendly_name: esp32-remote
+
+
+esp32:
+  board: esp32dev
+  framework:
+    type: arduino
+
+# Enable logging
+logger:
+  level: VERBOSE
+
+# Enable Home Assistant API
+api:
+  encryption:
+    key: !secret HomeAssistant_API_Key
+
+ota:
+  password: !secret ota_key
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+  
+  domain: .fritz.box
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "Esp32-Remote Fallback Hotspot"
+    password: "jwSmn1H2LUeW"
+
+captive_portal:
+
+
+remote_receiver:
+  pin:
+    number: GPIO22
+    inverted: true
+    mode:
+      input: true
+      pullup: true
+  dump: 
+    - raw
+    - nec
+    - sony
+    - samsung
+    - rc5
+    - rc6
+  buffer_size: 20k
+
+
+#####
+## Fake TV is a Samsung remote  
+## Samsung qe50q64c
+##
+######
+binary_sensor:
+  - platform: remote_receiver
+    name: "Fake TV Prime Video"
+    samsung:
+      data: 0xE0E02FD0
+      nbits: 32
+    filters:
+      - delayed_off: 200ms
+    on_press:
+      then:
+        - homeassistant.service:
+            service: media_player.play_media
+            data: 
+              entity_id: media_player.sony_bravia
+              media_content_id: "Prime Video"
+              media_content_type: app
+
+
+  - platform: remote_receiver
+    name: "Fake TV Netflix"
+    samsung:
+      data: 0xE0E0CF30
+      nbits: 32
+    filters:
+      - delayed_off: 200ms
+    on_press:
+      then:
+        - homeassistant.service:
+            service: media_player.play_media
+            data: 
+              entity_id: media_player.sony_bravia
+              media_content_id: "Netflix"
+              media_content_type: app
+
+  - platform: remote_receiver
+    name: "Fake TV Canal+"
+    samsung:
+      data: 0xE0E0D827
+      nbits: 32
+    filters:
+      - delayed_off: 200ms
+    on_press:
+      then:
+        - homeassistant.service:
+            service: media_player.play_media
+            data: 
+              entity_id: media_player.sony_bravia
+              media_content_id: "Canal+ App"
+              media_content_type: app
+
+  - platform: remote_receiver
+    name: "Fake TV Disney"
+    samsung:
+      data: 0xE0E0EC13
+      nbits: 32
+    filters:
+      - delayed_off: 200ms
+    on_press:
+      then:
+        - homeassistant.service:
+            service: media_player.play_media
+            data: 
+              entity_id: media_player.sony_bravia
+              media_content_id: "Disney"
+              media_content_type: app
+
+
+  - platform: remote_receiver
+    name: "Fake TV Emby"
+    samsung:
+      data: 0xE0E036C9
+      nbits: 32
+    filters:
+      - delayed_off: 200ms
+    on_press:
+      then:
+        - homeassistant.service:
+            service: media_player.play_media
+            data: 
+              entity_id: media_player.sony_bravia
+              media_content_id: "Emby"
+              media_content_type: app
+
+  - platform: remote_receiver
+    name: "Fake TV NPO Start"
+    samsung:
+      data: 0xE0E028D7
+      nbits: 32
+    filters:
+      - delayed_off: 200ms
+    on_press:
+      then:
+        - homeassistant.service:
+            service: media_player.play_media
+            data: 
+              entity_id: media_player.sony_bravia
+              media_content_id: "NPO Start"
+              media_content_type: app
+
+
+  - platform: remote_receiver
+    name: "Fake TV Num0"
+    samsung:
+      data: 0XE0E08877
+      nbits: 32
+    filters:
+      - delayed_off: 200ms
+    on_press:
+      then:
+        homeassistant.service:
+            service: remote.send_command
+      
+            data:
+              entity_id: remote.sony_bravia 
+              command: "Num0"
+
+
+  - platform: remote_receiver
+    name: "Fake TV Num1"
+    samsung:
+      data: 0xE0E020DF
+      nbits: 32
+    filters:
+      - delayed_off: 200ms
+    on_press:
+      then:
+        homeassistant.service:
+            service: remote.send_command
+      
+            data:
+              entity_id: remote.sony_bravia 
+              command: "Num1"
+
+
+
+  - platform: remote_receiver
+    name: "Fake TV Num2"
+    samsung:
+      data: 0xE0E0A05F
+      nbits: 32
+    filters:
+      - delayed_off: 200ms
+    on_press:
+      then:
+        homeassistant.service:
+            service: remote.send_command
+      
+            data:
+              entity_id: remote.sony_bravia 
+              command: "Num2"
+
+
+
+  - platform: remote_receiver
+    name: "Fake TV Num3"
+    samsung:
+      data: 0xE0E0609F
+      nbits: 32
+    filters:
+      - delayed_off: 200ms
+    on_press:
+      then:
+        homeassistant.service:
+            service: remote.send_command
+      
+            data:
+              entity_id: remote.sony_bravia 
+              command: "Num3"
+
+
+
+  - platform: remote_receiver
+    name: "Fake TV Num4"
+    samsung:
+      data: 0xE0E010EF
+      nbits: 32
+    filters:
+      - delayed_off: 200ms
+    on_press:
+      then:
+        homeassistant.service:
+            service: remote.send_command
+      
+            data:
+              entity_id: remote.sony_bravia 
+              command: "Num4"
+
+
+
+  - platform: remote_receiver
+    name: "Fake TV Num5"
+    samsung:
+      data: 0xE0E0906F
+      nbits: 32
+    filters:
+      - delayed_off: 200ms
+    on_press:
+      then:
+        homeassistant.service:
+            service: remote.send_command
+      
+            data:
+              entity_id: remote.sony_bravia 
+              command: "Num5"
+
+
+
+  - platform: remote_receiver
+    name: "Fake TV Num6"
+    samsung:
+      data: 0xE0E050AF
+      nbits: 32
+    filters:
+      - delayed_off: 200ms
+    on_press:
+      then:
+        homeassistant.service:
+            service: remote.send_command
+      
+            data:
+              entity_id: remote.sony_bravia 
+              command: "Num6"
+
+
+
+  - platform: remote_receiver
+    name: "Fake TV Num7"
+    samsung:
+      data: 0xE0E030CF
+      nbits: 32
+    filters:
+      - delayed_off: 200ms
+    on_press:
+      then:
+        homeassistant.service:
+            service: remote.send_command
+      
+            data:
+              entity_id: remote.sony_bravia 
+              command: "Num7"
+
+
+
+  - platform: remote_receiver
+    name: "Fake TV Num8"
+    samsung:
+      data: 0xE0E0B04F
+      nbits: 32
+    filters:
+      - delayed_off: 200ms
+    on_press:
+      then:
+        homeassistant.service:
+            service: remote.send_command
+      
+            data:
+              entity_id: remote.sony_bravia 
+              command: "Num8"
+
+
+
+
+  - platform: remote_receiver
+    name: "Fake TV Num9"
+    samsung:
+      data: 0xE0E0708F
+      nbits: 32
+    filters:
+      - delayed_off: 200ms
+    on_press:
+      then:
+        homeassistant.service:
+            service: remote.send_command
+      
+            data:
+              entity_id: remote.sony_bravia 
+              command: "Num9"
+
+
+
+  - platform: remote_receiver
+    name: "Fake TV VolumeUp"
+    samsung:
+      data: 0xE0E0E01F
+      nbits: 32
+    filters:
+      - delayed_off: 200ms
+    on_press:
+      then:
+        homeassistant.service:
+            service: remote.send_command
+      
+            data:
+              entity_id: remote.sony_bravia 
+              command: "VolumeUp"
+
+
+
+  - platform: remote_receiver
+    name: "Fake TV VolumeDown"
+    samsung:
+      data: 0xE0E0D02F
+      nbits: 32
+    filters:
+      - delayed_off: 200ms
+    on_press:
+      then:
+        homeassistant.service:
+            service: remote.send_command
+      
+            data:
+              entity_id: remote.sony_bravia 
+              command: "VolumeDown"                                                                                                                                          
+
+
+
+
+
+  - platform: remote_receiver
+    name: "Fake TV ChannelUp"
+    samsung:
+      data: 0xE0E048B7
+      nbits: 32
+    filters:
+      - delayed_off: 200ms
+    on_press:
+      then:
+        homeassistant.service:
+            service: remote.send_command
+      
+            data:
+              entity_id: remote.sony_bravia 
+              command: "ChannelUp"
+
+
+
+  - platform: remote_receiver
+    name: "Fake TV ChannelDown"
+    samsung:
+      data: 0xE0E008F7
+      nbits: 32
+    filters:
+      - delayed_off: 200ms
+    on_press:
+      then:
+        homeassistant.service:
+            service: remote.send_command
+      
+            data:
+              entity_id: remote.sony_bravia 
+              command: "ChannelDown"
+
+
+
+  - platform: remote_receiver
+    name: "Fake TV CursorUp"
+    samsung:
+      data: 0xE0E006F9
+      nbits: 32
+    filters:
+      - delayed_off: 200ms
+    on_press:
+      then:
+        homeassistant.service:
+            service: remote.send_command
+      
+            data:
+              entity_id: remote.sony_bravia 
+              command: "CursorUp"
+
+
+
+  - platform: remote_receiver
+    name: "Fake TV CursorDown"
+    samsung:
+      data: 0xE0E08679
+      nbits: 32
+    filters:
+      - delayed_off: 200ms
+    on_press:
+      then:
+        homeassistant.service:
+            service: remote.send_command
+      
+            data:
+              entity_id: remote.sony_bravia 
+              command: "CursorDown"
+
+
+
+
+  - platform: remote_receiver
+    name: "Fake TV CursorRight"
+    samsung:
+      data: 0xE0E046B9
+      nbits: 32
+    filters:
+      - delayed_off: 200ms
+    on_press:
+      then:
+        homeassistant.service:
+            service: remote.send_command
+      
+            data:
+              entity_id: remote.sony_bravia 
+              command: "CursorRight"
+
+
+
+  - platform: remote_receiver
+    name: "Fake TV CursorLeft"
+    samsung:
+      data: 0xE0E0A659
+      nbits: 32
+    filters:
+      - delayed_off: 200ms
+    on_press:
+      then:
+        homeassistant.service:
+            service: remote.send_command
+      
+            data:
+              entity_id: remote.sony_bravia 
+              command: "CursorLeft"
+
+
+
+  - platform: remote_receiver
+    name: "Fake TV Enter"
+    samsung:
+      data: 0xE0E016E9
+      nbits: 32
+    filters:
+      - delayed_off: 200ms
+    on_press:
+      then:
+        homeassistant.service:
+            service: remote.send_command
+      
+            data:
+              entity_id: remote.sony_bravia 
+              command: "Confirm"                                                                                                                                          
+
+
+
+
+  - platform: remote_receiver
+    name: "Fake TV Mute"
+    samsung:
+      data: 0xE0E0F00F
+      nbits: 32
+    filters:
+      - delayed_off: 200ms
+    on_press:
+      then:
+        homeassistant.service:
+            service: remote.send_command
+      
+            data:
+              entity_id: remote.sony_bravia 
+              command: "Mute"     
+
+
+
+
+
+  - platform: remote_receiver
+    name: "Fake TV Home"  # Menu button on Logitech
+    samsung:
+      data: "0xE0E058A7"
+      nbits: 32
+    filters:
+      - delayed_off: 200ms
+    on_press:
+      then:
+        homeassistant.service:
+            service: remote.send_command
+      
+            data:
+              entity_id: remote.sony_bravia 
+              command: "Home"
+
+
+
+  - platform: remote_receiver
+    name: "Fake TV Home"  # Info button on Logitech
+    samsung:
+      data: "0xE0E0F807"
+      nbits: 32
+    filters:
+      - delayed_off: 200ms
+    on_press:
+      then:
+        homeassistant.service:
+            service: remote.send_command
+      
+            data:
+              entity_id: remote.sony_bravia 
+              command: "ActionMenu"
+
+
+
+  - platform: remote_receiver
+    name: "Fake TV Rewind"
+    samsung:
+      data: 0xE0E0A25D
+      nbits: 32
+    filters:
+      - delayed_off: 200ms
+    on_press:
+      then:
+        homeassistant.service:
+            service: remote.send_command
+      
+            data:
+              entity_id: remote.sony_bravia 
+              command: "Rewind"     
+
+
+  - platform: remote_receiver
+    name: "Fake TV Play"
+    samsung:
+      data: 0xE0E0E21D
+      nbits: 32
+    filters:
+      - delayed_off: 200ms
+    on_press:
+      then:
+        homeassistant.service:
+            service: remote.send_command
+      
+            data:
+              entity_id: remote.sony_bravia 
+              command: "Play"     
+
+
+
+
+  - platform: remote_receiver
+    name: "Fake TV Stop"
+    samsung:
+      data: 0xE0E0629D
+      nbits: 32
+    filters:
+      - delayed_off: 200ms
+    on_press:
+      then:
+        homeassistant.service:
+            service: remote.send_command
+      
+            data:
+              entity_id: remote.sony_bravia 
+              command: "Stop"      
+
+
+
+  - platform: remote_receiver
+    name: "Fake TV Pause"
+    samsung:
+      data: 0xE0E052AD
+      nbits: 32
+    filters:
+      - delayed_off: 200ms
+    on_press:
+      then:
+        homeassistant.service:
+            service: remote.send_command
+      
+            data:
+              entity_id: remote.sony_bravia 
+              command: "Pause"  
+
+
+
+
+  - platform: remote_receiver
+    name: "Fake TV Red"
+    samsung:
+      data: 0xE0E036C9
+      nbits: 32
+    filters:
+      - delayed_off: 200ms
+    on_press:
+      then:
+        homeassistant.service:
+            service: remote.send_command
+      
+            data:
+              entity_id: remote.sony_bravia 
+              command: "Red"
+
+
+  - platform: remote_receiver
+    name: "Fake TV Blue"
+    samsung:
+      data: 0xE0E06897
+      nbits: 32
+    filters:
+      - delayed_off: 200ms
+    on_press:
+      then:
+        homeassistant.service:
+            service: remote.send_command
+      
+            data:
+              entity_id: remote.sony_bravia 
+              command: "Blue"
+
+
+
+  - platform: remote_receiver
+    name: "Fake TV Green"
+    samsung:
+      data: 0xE0E028D7
+      nbits: 32
+    filters:
+      - delayed_off: 200ms
+    on_press:
+      then:
+        homeassistant.service:
+            service: remote.send_command
+      
+            data:
+              entity_id: remote.sony_bravia 
+              command: "Green"                                                                                                                                          
+
+
+  - platform: remote_receiver
+    name: "Fake TV Yellow"
+    samsung:
+      data: 0xE0E0A857
+      nbits: 32
+    filters:
+      - delayed_off: 200ms
+    on_press:
+      then:
+        homeassistant.service:
+            service: remote.send_command
+      
+            data:
+              entity_id: remote.sony_bravia 
+              command: "Yellow"                                                                                                                                          
+
+
+
+  - platform: remote_receiver
+    name: "Fake TV Yellow"
+    samsung:
+      data: 0xE0E0A857
+      nbits: 32
+    filters:
+      - delayed_off: 200ms
+    on_press:
+      then:
+        homeassistant.service:
+            service: remote.send_command
+      
+            data:
+              entity_id: remote.sony_bravia 
+              command: "Yellow"    
+
+
+
+  - platform: remote_receiver
+    name: "Fake TV TvPower"
+    samsung:
+      data: 0xE0E019E6
+      nbits: 32
+    filters:
+      - delayed_off: 200ms
+    on_press:
+      then:
+        homeassistant.service:
+            service: remote.send_command
+      
+            data:
+              entity_id: remote.sony_bravia 
+              command: "TvPower" 
+
+
+
+
+  - platform: remote_receiver
+    name: "Fake TV PowerOff"
+    samsung:
+      data: 0xE0E09966
+      nbits: 32
+    filters:
+      - delayed_off: 200ms
+    on_press:
+      then:
+        homeassistant.service:
+            service: remote.send_command
+      
+            data:
+              entity_id: remote.sony_bravia 
+              command: "PowerOff" 
+
+ ####################################
+ ## FAKE AVR (SonySTR-K520P))
+
+  - platform: remote_receiver
+    name: "Fake AV PWON"
+    sony:
+      data: 0x00000741
+      nbits: 12
+    filters:
+      - delayed_off: 200ms
+    on_press:
+      then:
+        homeassistant.service: 
+            service: denonavr.get_command
+            data:
+              entity_id: media_player.marantz_nr1609
+              command: "/goform/formiPhoneAppDirect.xml?ZMON"
+                 
+  - platform: remote_receiver
+    name: "Fake AV PowerOff"
+    sony:
+      data: 0x00000F41
+      nbits: 12
+    filters:
+      - delayed_off: 200ms
+    on_press:
+      then:
+        homeassistant.service: 
+            service: denonavr.get_command
+            data:
+              entity_id: media_player.marantz_nr1609
+              command: "/goform/formiPhoneAppDirect.xml?ZMOFF"
+
+
+              
+  - platform: remote_receiver
+    name: "Fake AV VolumeUp"
+    sony:
+      data: 0x00000481
+      nbits: 12
+    filters:
+      - delayed_off: 200ms
+    on_press:
+      then:
+        homeassistant.service: 
+            service: denonavr.get_command
+            data:
+              entity_id: media_player.marantz_nr1609
+              command: "/goform/formiPhoneAppDirect.xml?MVUP"
+
+            
+  - platform: remote_receiver
+    name: "Fake AV VolumeDown"
+    sony:
+      data: 0x00000C81
+      nbits: 12
+    filters:
+      - delayed_off: 200ms
+    on_press:
+      then:
+        homeassistant.service: 
+            service: denonavr.get_command
+            data:
+              entity_id: media_player.marantz_nr1609
+              command: "/goform/formiPhoneAppDirect.xml?MVDOWN"
+
+
+  - platform: remote_receiver
+    name: "Fake AV Tuner"
+    sony:
+      data: 0x00004109
+      nbits: 12
+    filters:
+      - delayed_off: 200ms
+    on_press:
+      then:
+        homeassistant.service: 
+            service: denonavr.get_command
+            data:
+              entity_id: media_player.marantz_nr1609
+              command: "/goform/formiPhoneAppDirect.xml?RCSHP0230005"
+
+ 
+  - platform: remote_receiver
+    name: "Fake AV Tuner"
+    sony:
+      data: 0x00000821
+      nbits: 12
+    filters:
+      - delayed_off: 200ms
+    on_press:
+      then:
+        homeassistant.service: 
+          service: media_player.select_source
+          data:
+              entity_id: media_player.marantz_nr1609
+              source: "Tuner"
+
+
+  - platform: remote_receiver
+    name: "Fake AV Heos"
+    sony:
+      data: 0x00000BE1
+      nbits: 12
+    filters:
+      - delayed_off: 200ms
+    on_press:
+      then:
+        homeassistant.service: 
+          service: media_player.select_source
+          data:
+              entity_id: media_player.marantz_nr1609
+              source: "HEOS Music"
+
+
+  - platform: remote_receiver
+    name: "Fake AV Phono"
+    sony:
+      data: 0x00000041
+      nbits: 12
+    filters:
+      - delayed_off: 200ms
+    on_press:
+      then:
+        homeassistant.service: 
+          service: media_player.select_source
+          data:
+              entity_id: media_player.marantz_nr1609
+              source: "Phono"
+
+
+  - platform: remote_receiver
+    name: "Fake AV Tv"
+    sony:
+      data: 0x00000186
+      nbits: 12
+    filters:
+      - delayed_off: 200ms
+    on_press:
+      then:
+        homeassistant.service: 
+          service: media_player.select_source
+          data:
+              entity_id: media_player.marantz_nr1609
+              source: "TV Audio"
+
+
+  - platform: remote_receiver
+    name: "Fake AV Canal+"
+    sony:
+      data: 0x00000B81  #InputAux
+      nbits: 12
+    filters:
+      - delayed_off: 200ms
+    on_press:
+      then:
+        homeassistant.service: 
+          service: media_player.select_source
+          data:
+              entity_id: media_player.marantz_nr1609
+              source: "Radio Canal+"
+
+
+
+  - platform: remote_receiver
+    name: "Fake AV PresetUp"
+    sony:
+      data: 0x00000096
+      nbits: 12
+    filters:
+      - delayed_off: 200ms
+    on_press:
+      then:
+        homeassistant.service: 
+            service: denonavr.get_command
+            data:
+              entity_id: media_player.marantz_nr1609
+              command: "/goform/formiPhoneAppDirect.xml?TPANUP"
+
+
+  - platform: remote_receiver
+    name: "Fake AV PresetDown"
+    sony:
+      data: 0x00000896
+      nbits: 12
+    filters:
+      - delayed_off: 200ms
+    on_press:
+      then:
+        homeassistant.service: 
+            service: denonavr.get_command
+            data:
+              entity_id: media_player.marantz_nr1609
+              command: "/goform/formiPhoneAppDirect.xml?TPANDOWN"
+
+
+  - platform: remote_receiver
+    name: "Fake AV Preset01"
+    sony:
+      data: 0x00000016
+      nbits: 12
+    filters:
+      - delayed_off: 200ms
+    on_press:
+      then:
+        homeassistant.service: 
+            service: denonavr.get_command
+            data:
+              entity_id: media_player.marantz_nr1609
+              command: "/goform/formiPhoneAppDirect.xml?TPAN01"
+
+  - platform: remote_receiver
+    name: "Fake AV Preset02"
+    sony:
+      data: 0x00000816
+      nbits: 12
+    filters:
+      - delayed_off: 200ms
+    on_press:
+      then:
+        homeassistant.service: 
+            service: denonavr.get_command
+            data:
+              entity_id: media_player.marantz_nr1609
+              command: "/goform/formiPhoneAppDirect.xml?TPAN02"
+
+
+
+  - platform: remote_receiver
+    name: "Fake AV Preset03"
+    sony:
+      data: 0x00000416
+      nbits: 12
+    filters:
+      - delayed_off: 200ms
+    on_press:
+      then:
+        homeassistant.service: 
+            service: denonavr.get_command
+            data:
+              entity_id: media_player.marantz_nr1609
+              command: "/goform/formiPhoneAppDirect.xml?TPAN03"
+
+
+  - platform: remote_receiver
+    name: "Fake AV Preset04"
+    sony:
+      data: 0x00000C16
+      nbits: 12
+    filters:
+      - delayed_off: 200ms
+    on_press:
+      then:
+        homeassistant.service: 
+            service: denonavr.get_command
+            data:
+              entity_id: media_player.marantz_nr1609
+              command: "/goform/formiPhoneAppDirect.xml?TPAN04"
+
+
+  - platform: remote_receiver
+    name: "Fake AV Preset05"
+    sony:
+      data: 0x00000216
+      nbits: 12
+    filters:
+      - delayed_off: 200ms
+    on_press:
+      then:
+        homeassistant.service: 
+            service: denonavr.get_command
+            data:
+              entity_id: media_player.marantz_nr1609
+              command: "/goform/formiPhoneAppDirect.xml?TPAN05"
+
+
+  - platform: remote_receiver
+    name: "Fake AV Preset06"
+    sony:
+      data: 0x00000A16
+      nbits: 12
+    filters:
+      - delayed_off: 200ms
+    on_press:
+      then:
+        homeassistant.service: 
+            service: denonavr.get_command
+            data:
+              entity_id: media_player.marantz_nr1609
+              command: "/goform/formiPhoneAppDirect.xml?TPAN06"
+
+
+  - platform: remote_receiver
+    name: "Fake AV Preset07"
+    sony:
+      data: 0x00000616
+      nbits: 12
+    filters:
+      - delayed_off: 200ms
+    on_press:
+      then:
+        homeassistant.service: 
+            service: denonavr.get_command
+            data:
+              entity_id: media_player.marantz_nr1609
+              command: "/goform/formiPhoneAppDirect.xml?TPAN07"
+
+
+  - platform: remote_receiver
+    name: "Fake AV Preset08"
+    sony:
+      data: 0x00000E16
+      nbits: 12
+    filters:
+      - delayed_off: 200ms
+    on_press:
+      then:
+        homeassistant.service: 
+            service: denonavr.get_command
+            data:
+              entity_id: media_player.marantz_nr1609
+              command: "/goform/formiPhoneAppDirect.xml?TPAN08"
+
+
+  - platform: remote_receiver
+    name: "Fake AV Preset09"
+    sony:
+      data: 0x00000E16
+      nbits: 12
+    filters:
+      - delayed_off: 200ms
+    on_press:
+      then:
+        homeassistant.service: 
+            service: denonavr.get_command
+            data:
+              entity_id: media_player.marantz_nr1609
+              command: "/goform/formiPhoneAppDirect.xml?TPAN09"
+
+
+  - platform: remote_receiver
+    name: "Fake AV Curser Up"
+    sony:
+      data: 0x00000089
+      nbits: 12
+    filters:
+      - delayed_off: 200ms
+    on_press:
+      then:
+        homeassistant.service: 
+            service: denonavr.get_command
+            data:
+              entity_id: media_player.marantz_nr1609
+              command: "/goform/formiPhoneAppDirect.xml?MNCUP"
+
+
+
+  - platform: remote_receiver
+    name: "Fake AV Curser Down"
+    sony:
+      data: 0x00000889
+      nbits: 12
+    filters:
+      - delayed_off: 200ms
+    on_press:
+      then:
+        homeassistant.service: 
+            service: denonavr.get_command
+            data:
+              entity_id: media_player.marantz_nr1609
+              command: "/goform/formiPhoneAppDirect.xml?MNCDN"             
+
+
+
+
+
+  - platform: remote_receiver
+    name: "Fake AV Curser Left"
+    sony:
+      data: 0x00000E89
+      nbits: 12
+    filters:
+      - delayed_off: 200ms
+    on_press:
+      then:
+        homeassistant.service: 
+            service: denonavr.get_command
+            data:
+              entity_id: media_player.marantz_nr1609
+              command: "/goform/formiPhoneAppDirect.xml?MNCLT"            
+
+
+
+
+  - platform: remote_receiver
+    name: "Fake AV Curser Right"
+    sony:
+      data: 0x00000689
+      nbits: 12
+    filters:
+      - delayed_off: 200ms
+    on_press:
+      then:
+        homeassistant.service: 
+            service: denonavr.get_command
+            data:
+              entity_id: media_player.marantz_nr1609
+              command: "/goform/formiPhoneAppDirect.xml?MNCRT"             
+
+
+
+
+  - platform: remote_receiver
+    name: "Fake AV Curser Confirm"
+    sony:
+      data: 0x00000301
+      nbits: 12
+    filters:
+      - delayed_off: 200ms
+    on_press:
+      then:
+        homeassistant.service: 
+            service: denonavr.get_command
+            data:
+              entity_id: media_player.marantz_nr1609
+              command: "/goform/formiPhoneAppDirect.xml?MNCENT"          
+
+
+
+  - platform: remote_receiver
+    name: "Fake AV Curser Return"
+    sony:
+      data: 0x00000529
+      nbits: 12
+    filters:
+      - delayed_off: 200ms
+    on_press:
+      then:
+        homeassistant.service: 
+            service: denonavr.get_command
+            data:
+              entity_id: media_player.marantz_nr1609
+              command: "/goform/formiPhoneAppDirect.xml?MNCRTN"
+
+
+  - platform: remote_receiver
+    name: "Fake AV Option/Info" #INFO KEY
+    sony:
+      data: 0x00000DE1  #Input Sat
+      nbits: 12
+    filters:
+      - delayed_off: 200ms
+    on_press:
+      then:
+        homeassistant.service: 
+            service: denonavr.get_command
+            data:
+              entity_id: media_player.marantz_nr1609
+              command: "/goform/formiPhoneAppDirect.xml?MNOPT"
+
+
+  - platform: remote_receiver
+    name: "Fake AV Mute" 
+    sony:
+      data: 0x00000281  #Input Sat
+      nbits: 12
+    filters:
+      - delayed_off: 200ms
+    on_press:
+      then:
+        homeassistant.service: 
+            service: denonavr.get_command
+            data:
+              entity_id: media_player.marantz_nr1609
+              command: "/goform/formiPhoneAppDirect.xml?MUON"
