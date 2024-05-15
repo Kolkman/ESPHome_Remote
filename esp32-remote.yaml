@@ -337,14 +337,19 @@ binary_sensor:
 
   - platform: remote_receiver
     name: "Fake TV VolumeUp"
+    id: "tv_volumeup"
     samsung:
       data: 0xE0E0E01F
       nbits: 32
     filters:
       - delayed_off: 200ms
     on_press:
-      then:
-        homeassistant.service:
+      while:
+        condition:
+          binary_sensor.is_on: tv_volumeup
+        then:
+         - delay: 300ms
+         - homeassistant.service:
             service: remote.send_command
       
             data:
@@ -355,14 +360,19 @@ binary_sensor:
 
   - platform: remote_receiver
     name: "Fake TV VolumeDown"
+    id: "tv_volumedown"
     samsung:
       data: 0xE0E0D02F
       nbits: 32
     filters:
       - delayed_off: 200ms
     on_press:
+     while:
+      condition:
+        binary_sensor.is_on: tv_volumedown
       then:
-        homeassistant.service:
+       - delay: 300ms
+       - homeassistant.service:
             service: remote.send_command
       
             data:
@@ -448,14 +458,19 @@ binary_sensor:
 
   - platform: remote_receiver
     name: "Fake TV CursorRight"
+    id: "tv_cursorright"
     samsung:
       data: 0xE0E046B9
       nbits: 32
     filters:
       - delayed_off: 200ms
     on_press:
+     while:
+      condition:
+        binary_sensor.is_on: tv_cursorright
       then:
-        homeassistant.service:
+       - delay: 300ms
+       - homeassistant.service:
             service: remote.send_command
       
             data:
@@ -466,16 +481,20 @@ binary_sensor:
 
   - platform: remote_receiver
     name: "Fake TV CursorLeft"
+    id: "tv_cursorleft"
     samsung:
       data: 0xE0E0A659
       nbits: 32
     filters:
       - delayed_off: 200ms
     on_press:
+     while:
+      condition:
+        binary_sensor.is_on: tv_cursorleft
       then:
-        homeassistant.service:
+       - delay: 300ms
+       - homeassistant.service:
             service: remote.send_command
-      
             data:
               entity_id: remote.sony_bravia 
               command: "CursorLeft"
@@ -499,6 +518,39 @@ binary_sensor:
               command: "Confirm"                                                                                                                                          
 
 
+  - platform: remote_receiver
+    name: "Fake TV Exit"
+    samsung:
+      data: 0xE0E0B44B
+      nbits: 32
+    filters:
+      - delayed_off: 200ms
+    on_press:
+      then:
+        homeassistant.service:
+            service: remote.send_command
+      
+            data:
+              entity_id: remote.sony_bravia 
+              command: "Exit"                                                                                                                                          
+
+
+
+  - platform: remote_receiver
+    name: "Fake TV Return"
+    samsung:
+      data: 0xE0E0C837
+      nbits: 32
+    filters:
+      - delayed_off: 200ms
+    on_press:
+      then:
+        homeassistant.service:
+            service: remote.send_command
+      
+            data:
+              entity_id: remote.sony_bravia 
+              command: "Return"                                                                                                                                          
 
 
   - platform: remote_receiver
@@ -682,21 +734,6 @@ binary_sensor:
               command: "Green"                                                                                                                                          
 
 
-  - platform: remote_receiver
-    name: "Fake TV Yellow"
-    samsung:
-      data: 0xE0E0A857
-      nbits: 32
-    filters:
-      - delayed_off: 200ms
-    on_press:
-      then:
-        homeassistant.service:
-            service: remote.send_command
-      
-            data:
-              entity_id: remote.sony_bravia 
-              command: "Yellow"                                                                                                                                          
 
 
 
@@ -752,6 +789,25 @@ binary_sensor:
             data:
               entity_id: remote.sony_bravia 
               command: "PowerOff" 
+
+
+
+
+  - platform: remote_receiver
+    name: "Fake TV AudioOutput Toggle"
+    samsung:
+      data: 0xE0E04DB2 #Multilink FakeTV
+      nbits: 32
+    filters:
+      - delayed_off: 200ms
+    on_press:
+      then:
+        homeassistant.service:
+            service: remote.send_command
+      
+            data:
+              entity_id: remote.sony_bravia 
+              command: "AudioOutput_Toggle" 
 
  ####################################
  ## FAKE AVR (SonySTR-K520P))
@@ -1178,7 +1234,7 @@ binary_sensor:
             service: denonavr.get_command
             data:
               entity_id: media_player.marantz_nr1609
-              command: "/goform/formiPhoneAppDirect.xml?MNCENT"          
+              command: "/goform/formiPhoneAppDirect.xml?MNENT"          
 
 
 
@@ -1217,7 +1273,7 @@ binary_sensor:
   - platform: remote_receiver
     name: "Fake AV Mute" 
     sony:
-      data: 0x00000281  #Input Sat
+      data: 0x00000281  # MUTE
       nbits: 12
     filters:
       - delayed_off: 200ms
